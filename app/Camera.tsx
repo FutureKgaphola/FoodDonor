@@ -9,14 +9,15 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from "expo-router";
+import UploadContent from '@/components/UploadContent';
+import { ImgDataStructure } from './Interfaces/AppInterFaces';
+import { ActivityIndicator } from 'react-native-paper';
 const CameraScreen = () => {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
+  const[HideSnapper,SetHideSnapper]=useState(false);
+  const [isDone,SetDone]=useState(false);
   let cameraRef = useRef<any>(undefined);
-  interface ImgDataStructure {
-    key: string,
-    imgPath: string
-  }
   const [pictureSnapped, setPicturesArray] = useState<ImgDataStructure[]>([]);
 
   if (!permission) {
@@ -34,77 +35,87 @@ const CameraScreen = () => {
   }
 
   const TakePictureAsync = async () => {
+    SetHideSnapper(true);
     const photo = await cameraRef?.current.takePictureAsync();
-    const data = photo.uri;
-    setPicturesArray([...pictureSnapped, { key: uuidv4(), imgPath: data }])
-
+    
+    if(photo){
+      const data = photo.uri;
+      setPicturesArray([...pictureSnapped, { key: uuidv4(), imgPath: data }]);
+      SetHideSnapper(false);
+    }
   }
   const RemoveImage = (key: string) => {
-    // let temp=
     setPicturesArray(pictureSnapped.filter(item => item.key !== key));
   }
 
   function toggleCameraFacing() {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
-  const CloseCamera=()=>{
+  const CloseCamera = () => {
     setPicturesArray([]);
-    router.navigate('/contribute')
+    SetDone(false);
+    router.replace('/contribute');
   }
   return (
-    <SafeAreaView style={{flex:1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <View style={{ display: 'flex', flexDirection: 'row' }}>
-        <TouchableOpacity onPress={()=>CloseCamera()} style={{ backgroundColor: "black", padding: 8, margin: 4, borderRadius: 15, zIndex: 5 }}>
+        <TouchableOpacity onPress={() => CloseCamera()} style={{ backgroundColor: "black", padding: 8, margin: 4, borderRadius: 15, zIndex: 5 }}>
           <Text style={{ color: "white" }}>Close</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.container}>
+      { !isDone ?
         <CameraView ref={cameraRef} style={styles.camera} facing={facing}>
-          <View style={styles.buttonContainer}>
-            {
-              pictureSnapped.length < 4 ?
-                <>
-                  <TouchableOpacity style={styles.button} onPress={TakePictureAsync}>
-                    <Ionicons
-                      name="camera"
-                      size={26}
-                      color={"white"}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-                    <MaterialIcons name="flip-camera-ios" size={26} color="white" />
-                  </TouchableOpacity>
-                </> :
-                <Text style={{ color: "white", flex: 1, alignSelf: 'flex-end', alignItems: 'center' }}>LImit Reached. Click Done to upload your pictures</Text>
-            }
-
-          </View>
+        <View style={styles.buttonContainer}>
           {
-            pictureSnapped.length > 0 ?
-              <View style={styles.bottomSheet}>
-                <View style={{ display: 'flex', flexDirection: 'row' }}>
-                  <TouchableOpacity style={styles.doneBtn}>
-                    <Text style={{ color: "black" }}>Done</Text>
-                  </TouchableOpacity>
-                </View>
-                <FlatList
-                  horizontal
-                  data={pictureSnapped}
-                  renderItem={({ item }: { item: any }) => (
-                    <View style={styles.imagewrapper}>
-                      <SimpleLineIcons onPress={() => RemoveImage(item.key)}
-                        style={{ position: 'absolute', zIndex: 5, backgroundColor: 'white', borderRadius: 30 }} name="minus" size={18} color="black" />
-                      <Image
-                        style={{ width: 50, height: 50, zIndex: 2 }}
-                        source={{ uri: item.imgPath }} />
-                    </View>
-                  )}
-
-                />
-              </View> : null
+            pictureSnapped.length < 3 ?
+              <>
+              {
+                HideSnapper ? null :
+                <TouchableOpacity style={styles.button} onPress={TakePictureAsync}>
+                  <Ionicons
+                    name="camera"
+                    size={26}
+                    color={"white"}
+                  />
+                </TouchableOpacity>
+              } 
+                <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+                  <MaterialIcons name="flip-camera-ios" size={26} color="white" />
+                </TouchableOpacity>
+              </> :
+              <Text style={{ color: "white", flex: 1, alignSelf: 'flex-end', alignItems: 'center' }}>LImit Reached. Click Done to upload your pictures</Text>
           }
-        </CameraView>
+
+        </View>
+
+        <View style={styles.bottomSheet}>
+          {pictureSnapped.length > 0 ? <View style={{ display: 'flex', flexDirection: 'row' }}>
+            <TouchableOpacity onPress={()=>SetDone(true)} style={styles.doneBtn}>
+              <Text style={{ color: "black" }}>Done</Text>
+            </TouchableOpacity>
+            {HideSnapper ? <ActivityIndicator animating={true} color={'white'} /> :null}
+          </View> : null}
+
+          <FlatList
+            horizontal
+            data={pictureSnapped}
+            renderItem={({ item }: { item: any }) => (
+              <View style={styles.imagewrapper}>
+                <SimpleLineIcons onPress={() => RemoveImage(item.key)}
+                  style={{ position: 'absolute', zIndex: 5, backgroundColor: 'white', borderRadius: 30 }} name="minus" size={18} color="black" />
+                <Image
+                  style={{ width: 50, height: 50, zIndex: 2 }}
+                  source={{ uri: item.imgPath }} />
+              </View>
+            )}
+
+          />
+        </View>
+
+      </CameraView> : <UploadContent pictureSnapped={pictureSnapped} setPicturesArray={setPicturesArray}/>
+      }
       </View>
     </SafeAreaView>
   );
