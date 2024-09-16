@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Alert, FlatList, Image, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
-import { Button, Snackbar, TextInput } from 'react-native-paper';
+import { Button, Divider, Snackbar, TextInput } from 'react-native-paper';
 import AppLogo from './AppLogo';
 import { ImgDataStructure } from '@/app/Interfaces/AppInterFaces';
 import { SimpleLineIcons } from '@expo/vector-icons';
@@ -31,9 +31,11 @@ const UploadContent = ({ pictureSnapped, setPicturesArray }: { pictureSnapped: I
             <View style={styles.container}>
                 <AppLogo title='Share with the community' height={50} width={50} />
                 <Text>{text}</Text>
+                <Divider />
+                <Text style={{color:'#697565'}}>{`Meals are expected to be packaged well and with concern to heal stantards and safety. \n For instance if you are donating 2 plates of meal or rice, they are required to be packgaged individually so they are seen and recorded as 2 meals in this case.`}</Text>
                 <KeyboardAvoidingView
                     style={{ flex: 1 }}
-                    behavior={Platform.OS=="ios" ? 'padding' :undefined}
+                    behavior={Platform.OS == "ios" ? 'padding' : undefined}
                     keyboardVerticalOffset={60}
                 >
                     <FlatList
@@ -55,7 +57,7 @@ const UploadContent = ({ pictureSnapped, setPicturesArray }: { pictureSnapped: I
                             </View>
                         )}
                     />
-
+                    <Divider />
                     <View>
                         <Formik
                             initialValues={{ message: "" }}
