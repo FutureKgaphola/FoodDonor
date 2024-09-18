@@ -1,11 +1,11 @@
-import { View, Image, Text, ScrollView, TouchableOpacity } from "react-native";
-
-import { Button, Card, Chip, Divider, SegmentedButtons } from "react-native-paper";
-import { useState } from "react";
+import { View, Image, Text, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
+import { Button, Card, Chip, Divider } from "react-native-paper";
 import { AntDesign, Entypo, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
+import { RefObject } from "react";
 
-const Posts = () => {
-    const [value, setValue] = useState('');
+const Posts = ({bottomSheetRef}:{bottomSheetRef:RefObject<BottomSheetMethods>}) => {
+   
     const pics = [{
         key: 1,
         image: require('../assets/images/man.jpg'),
@@ -99,7 +99,7 @@ const Posts = () => {
                         ></View>
 
                         <View style={{ justifyContent: "space-between", alignItems: "stretch", flexDirection: "row", margin: 5 }}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={()=>bottomSheetRef.current?.close()}>
                                 <Button style={{ height: 40 }} icon={() => (
                                     <AntDesign name="like2" size={15} color={'white'} />
                                 )}
@@ -112,7 +112,7 @@ const Posts = () => {
                             </TouchableOpacity>
 
 
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={()=>bottomSheetRef.current?.expand()}>
                                 <Button style={{ height: 40 }} icon={() => (
                                     <MaterialCommunityIcons name="basket-unfill" size={15} color={'white'} />
                                 )}
@@ -127,8 +127,20 @@ const Posts = () => {
                     </Card>
                 ))
             }
+            
         </View>
     );
 };
 
 export default Posts;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 24,
+        backgroundColor: 'grey',
+    },
+    contentContainer: {
+        flex: 1,
+        alignItems: 'center',
+    },
+});
