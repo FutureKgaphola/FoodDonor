@@ -3,7 +3,7 @@ import AppLogo from "@/components/AppLogo";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { Image, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
     BigText: {
         color: 'black',
         fontSize: 30,
-        lineHeight: 32,
         marginTop: 8,
         fontFamily: 'PoppinsBold'
     },

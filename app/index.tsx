@@ -16,7 +16,6 @@ const LoginPage = () => {
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <>
                     <KeyboardAvoidingView
-                        style={{ flex: 1 }}
                         behavior={Platform.OS == "ios" ? 'padding' : undefined}
                         keyboardVerticalOffset={60}
                     >
@@ -95,7 +94,6 @@ const styles = StyleSheet.create({
     BigText: {
         color: 'black',
         fontSize: 30,
-        lineHeight: 32,
         marginTop: 6,
         fontFamily: 'PoppinsBold'
     },

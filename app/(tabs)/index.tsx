@@ -10,7 +10,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 export default function HomeScreen() {
   const { styles } = useStyleSheet();
-  const snapPonits = useMemo(() => ["18%", "28%", "30%"], []);
+  const snapPonits = useMemo(() => ["22%", "32%", "45%"], []);
   // ref
   const bottomSheetRef = useRef<BottomSheet>(null);
   useEffect(() => {
@@ -63,12 +63,22 @@ export default function HomeScreen() {
           <Text style={s`text-lg font-bold text-center`}>Meal Request</Text>
           <View style={s`m-1`}>
             <View style={s`flex flex-row rounded-md border-gray-50 border-2 p-2 items-center`}>
-              <Ionicons name="fast-food-outline" size={24} color="black" />
-              <Text>Proper meal</Text>
+              <Ionicons name="fast-food-outline" size={28} color="black" />
+              <View>
+                <Text>Proper meal</Text>
+                <Text style={s`text-xs font-thin`}>meal category</Text>
+              </View>
             </View>
             <View style={s`flex flex-row rounded-md border-gray-50 border-2 p-2 items-center`}>
-              <Ionicons name="home-outline" size={24} color="black" />
-              <Text>Lebowakgomo, malaneng zone-F</Text>
+              <Ionicons name="home-outline" size={28} color="black" />
+              <View>
+                <Text>Lebowakgomo, malaneng zone-F</Text>
+                <Text style={s`text-xs font-thin`}>collection Address</Text>
+              </View>
+            </View>
+            <View style={s`flex flex-row p-2 items-center`}>
+              <Ionicons name="alert-circle-outline" size={15} color="#F6E96B" />
+              <Text style={s`text-sm font-thin`}>Please note your profile data will be shared with the owner of this meal. This will help facilitate the process of awarding the meal(s)</Text>
             </View>
             <Button
               buttonColor="#387F39"
