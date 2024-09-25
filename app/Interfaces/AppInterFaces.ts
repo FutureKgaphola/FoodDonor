@@ -8,5 +8,8 @@ export interface ImgDataStructure {
     msg:string,
     imgUrlpath:string,
     category:string,
-    charityOrganization:string
+    cash:string,
+    charityOrganization:string,
+    gaveAway:string,
+    Awarded:string
   }

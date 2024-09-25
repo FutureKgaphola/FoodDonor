@@ -4,7 +4,7 @@ import { Card, Chip } from "react-native-paper";
 import { Entypo, Ionicons } from "@expo/vector-icons";
 import { IHistory } from "@/app/Interfaces/AppInterFaces";
 
-const HistoryTemplate = ({ dummyData }: { dummyData: IHistory[] }) => {
+const HistoryTemplate = ({ dummyData }: { dummyData: IHistory[]}) => {
     return (
         <View>
             <FlatList
@@ -29,7 +29,7 @@ const HistoryTemplate = ({ dummyData }: { dummyData: IHistory[] }) => {
                                 textStyle={{ color: "white" }}
                             >{item.category}</Chip>
                         </View>
-                        <Text>{item.msg}</Text>
+                        <Text>{item.category.trim() == "donated cash" ? "R"+item.cash : item.msg }</Text>
                         <View style={{ flexDirection: "row", marginTop: 5, justifyContent: 'flex-end' }}>
                             <Text style={{ fontFamily: "SpaceMono", fontSize: 10 }}>
                                 {item.datetime}

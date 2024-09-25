@@ -15,7 +15,6 @@ export default function HomeScreen() {
   const bottomSheetRef = useRef<BottomSheet>(null);
   useEffect(() => {
     bottomSheetRef.current?.close();
-    bottomSheetRef.current?.forceClose();
   }, [])
   const renderbacdrop = useCallback((props: any) => <BottomSheetBackdrop appearsOnIndex={1} disappearsOnIndex={0} {...props} />, []);
   // callbacks
